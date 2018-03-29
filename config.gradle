@@ -1,0 +1,30 @@
+ext {
+    app = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "25.0.2",
+            minSdkVersion    : 16,
+            targetSdkVersion : 27,
+            versionCode      : 1,
+            versionName      : "1.0",
+            isDebug          : true
+    ]
+
+    commonlib = [
+            compileSdkVersion : 27,
+            buildToolsVersion : "25.0.2",
+            minSdkVersion     : 16,
+            targetSdkVersion  : 27,
+            versionCode       : 1,
+            versionName       : "1.0",
+            appcompatv7Version: '27.1.0'
+    ]
+
+    commonui = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "25.0.2",
+            minSdkVersion    : 16,
+            targetSdkVersion : 27,
+            versionCode      : 1,
+            versionName      : "1.0",
+    ]
+}
