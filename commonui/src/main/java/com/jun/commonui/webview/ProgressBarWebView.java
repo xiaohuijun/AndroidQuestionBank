@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class ProgressBarWebView extends LinearLayout {
             mWebView = new WVJBWebView(context);
         }
         addView(mWebView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
+        removeJavascriptInterfaces(mWebView);
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -171,6 +172,19 @@ public class ProgressBarWebView extends LinearLayout {
     public void callHandler(String handlerName, Object data, WVJBWebView.WVJBResponseCallback<Object> responseCallback) {
         if (responseCallback == null) return;
         mWebView.callHandler(handlerName, data, responseCallback);
+    }
+
+    @TargetApi(11)
+    private static final void removeJavascriptInterfaces(WebView webView) {
+        try {
+            if (Build.VERSION.SDK_INT >= 11 && Build.VERSION.SDK_INT < 17) {
+                webView.removeJavascriptInterface("searchBoxJavaBridge_");
+                webView.removeJavascriptInterface("accessibility");
+                webView.removeJavascriptInterface("accessibilityTraversal");
+            }
+        } catch (Throwable tr) {
+            tr.printStackTrace();
+        }
     }
 
     public interface ProgressChangedListener {
