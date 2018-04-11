@@ -12,11 +12,12 @@ import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.module.AppGlideModule
 import com.jun.commonlib.config.BaseConstants
+import okhttp3.OkHttpClient
 import java.io.InputStream
 
 
 @GlideModule
-class MGlideModule : AppGlideModule {
+class MGlideModule :AppGlideModule{
     constructor() : super()
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {
@@ -25,7 +26,16 @@ class MGlideModule : AppGlideModule {
         builder.setDiskCache(InternalCacheDiskCacheFactory(context, BaseConstants.SD_PATH_PIC, BaseConstants.DISC_CACHESIZE))
     }
 
+
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(ProgressInterceptor.getOkHttpClient()))
+        //添加拦截器到Glide
+        val builder = OkHttpClient.Builder()
+        builder.addInterceptor(ProgressInterceptor())
+        val okHttpClient = builder.build()
+        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(okHttpClient))
+    }
+
+    override fun isManifestParsingEnabled(): Boolean {
+        return false
     }
 }

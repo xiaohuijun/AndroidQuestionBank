@@ -4,17 +4,16 @@ import com.jun.commonlib.imageLoader.Listener.ProgressLoadListener
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import okio.*
+import java.lang.ref.WeakReference
 
 class ProgressResponseBody : ResponseBody {
-    private lateinit var imageUrl: String
     private lateinit var responseBody: ResponseBody
-    private var progressListener: ProgressLoadListener?
+    private var progressListener: WeakReference<ProgressLoadListener>?
     private lateinit var bufferedSource: BufferedSource;
 
-    constructor(url: String, responseBody: ResponseBody, progressListener: ProgressLoadListener?) {
-        this.imageUrl = url;
-        this.responseBody = responseBody;
-        this.progressListener = progressListener;
+    constructor(url: String, responseBody: ResponseBody) {
+        this.responseBody = responseBody
+        this.progressListener = ProgressInterceptor.listenersMap.get(url)
     }
 
     override fun contentType(): MediaType? {
@@ -35,9 +34,9 @@ class ProgressResponseBody : ResponseBody {
         return object : ForwardingSource(source) {
             var totalBytesRead: Long = 0
             override fun read(sink: Buffer?, byteCount: Long): Long {
-                val bytesRead: Long = super.read(sink, byteCount)
+                val bytesRead: Long = super.read(sink!!, byteCount)
                 totalBytesRead = totalBytesRead + if (bytesRead == -1L) 0 else bytesRead
-                progressListener?.update(totalBytesRead, contentLength())
+                progressListener?.get()?.update(totalBytesRead, contentLength())
                 return bytesRead;
             }
         };

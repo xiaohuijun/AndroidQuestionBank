@@ -130,9 +130,6 @@ class GlideImageLoaderStrategy : BaseImageLoaderStrategy {
         ProgressInterceptor.addProgressListener(url, object : ProgressLoadListener {
             override fun update(bytesRead: Long, contentLength: Long) {
                 listener.update(bytesRead, contentLength)
-                if (bytesRead == contentLength) {
-                    ProgressInterceptor.removeProgressListener(url)
-                }
             }
 
             override fun onException() {}
@@ -146,11 +143,13 @@ class GlideImageLoaderStrategy : BaseImageLoaderStrategy {
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                         listener.onException()
+                        ProgressInterceptor.removeProgressListener(url)
                         return false
                     }
 
                     override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
                         listener.onResourceReady(resource)
+                        ProgressInterceptor.removeProgressListener(url)
                         return false
                     }
                 })
