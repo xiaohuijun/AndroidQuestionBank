@@ -963,6 +963,7 @@ public class WVJBWebView extends WebView {
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            if (handler != null) handler.proceed();//支持https
             if (webViewClient != null) {
                 webViewClient.onReceivedSslError(view, handler, error);
             } else {

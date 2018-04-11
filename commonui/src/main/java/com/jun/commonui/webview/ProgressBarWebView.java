@@ -93,7 +93,7 @@ public class ProgressBarWebView extends LinearLayout {
                         mProgressBar.setVisibility(VISIBLE);
                     mProgressBar.setProgress(newProgress);
                 }
-                super.onProgressChanged(view, newProgress);
+                //super.onProgressChanged(view, newProgress);
             }
         });
     }

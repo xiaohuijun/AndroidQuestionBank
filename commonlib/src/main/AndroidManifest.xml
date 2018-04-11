@@ -1,2 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jun.commonlib" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.jun.commonlib">
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true">
+        <meta-data
+            android:name="com.jun.commonlib.imageLoader.glide.MGlideModule"
+            android:value="GlideModule"
+            tools:node="remove" />
+    </application>
+</manifest>
