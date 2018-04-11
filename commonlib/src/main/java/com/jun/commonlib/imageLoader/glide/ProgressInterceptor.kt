@@ -9,11 +9,9 @@ import java.lang.ref.WeakReference
 
 object ProgressInterceptor {
     private var listenersMap = mutableMapOf<String, WeakReference<ProgressLoadListener>>()
-    private lateinit var okHttpClient: OkHttpClient;
 
     fun getOkHttpClient(): OkHttpClient {
-        if (okHttpClient == null) {
-            okHttpClient = OkHttpClient.Builder()
+            return OkHttpClient.Builder()
                     .addNetworkInterceptor(object : Interceptor {
                         override fun intercept(chain: Interceptor.Chain): Response {
                             val request = chain.request();
@@ -24,8 +22,6 @@ object ProgressInterceptor {
                         }
                     })
                     .build()
-        }
-        return okHttpClient;
     }
 
     /**
