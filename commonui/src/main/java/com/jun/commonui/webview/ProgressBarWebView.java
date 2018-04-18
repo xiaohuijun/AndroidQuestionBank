@@ -60,9 +60,14 @@ public class ProgressBarWebView extends LinearLayout {
         if (attrs != null) {
             TypedArray mTypedArray = context.obtainStyledAttributes(attrs,
                     R.styleable.ProgressBarWebView);
-            mProgressBarHight = mTypedArray.getInteger(R.styleable.ProgressBarWebView_progressBarHight, 6);
-            isShowProgressBar = mTypedArray.getBoolean(R.styleable.ProgressBarWebView_isShowProgressBar, true);
-            mProgressBarDrawableId = mTypedArray.getInteger(R.styleable.ProgressBarWebView_progressBarDrawableId, R.drawable.ui_webview_progress_bar_states);
+            try {
+                mProgressBarHight = mTypedArray.getInteger(R.styleable.ProgressBarWebView_progressBarHight, 6);
+                isShowProgressBar = mTypedArray.getBoolean(R.styleable.ProgressBarWebView_isShowProgressBar, true);
+                mProgressBarDrawableId = mTypedArray.getInteger(R.styleable.ProgressBarWebView_progressBarDrawableId, R.drawable.ui_webview_progress_bar_states);
+                mTypedArray.recycle();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         // 初始化进度条
